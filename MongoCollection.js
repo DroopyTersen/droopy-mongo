@@ -13,8 +13,9 @@ MongoCollection.prototype.find = function(mongoQuery) {
 	.toArray(function(err, results){
 		if (err) {
 			deferred.reject(err);
+		} else {
+			deferred.resolve(results);
 		}
-		deferred.resolve(results);
 	});
 	return deferred.promise;
 };
@@ -83,4 +84,12 @@ MongoCollection.prototype.update = function(query, update) {
 	return _update(query, {$set: update }, { multi: true });
 };
 
+MongoCollection.prototype.remove = function (query) {
+	var deferred = q.defer();
+	this._collection.remove(query, function(err){
+		if(err) deferred.reject(err);
+		else deferred.resolve();
+	})
+	return deferred.promise();
+};
 module.exports = MongoCollection;
