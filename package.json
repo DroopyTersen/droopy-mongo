@@ -1,6 +1,6 @@
 {
   "name": "droopy-mongo",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Wrapper form mongodb to promisify things",
   "main": "index.js",
   "scripts": {

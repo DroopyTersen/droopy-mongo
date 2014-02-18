@@ -73,15 +73,15 @@ MongoCollection.prototype._update = function(query, updateObj, options) {
 };
 
 MongoCollection.prototype.overwrite = function(query, item) {
-	return _update(query, item);
+	return this._update(query, item);
 };
 
 MongoCollection.prototype.updateOne = function(query, update) {
-	return _update(query, {$set: update });
+	return this._update(query, {$set: update });
 };
 
 MongoCollection.prototype.update = function(query, update) {
-	return _update(query, {$set: update }, { multi: true });
+	return this._update(query, {$set: update }, { multi: true });
 };
 
 MongoCollection.prototype.remove = function (query) {
