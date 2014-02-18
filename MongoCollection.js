@@ -60,7 +60,7 @@ MongoCollection.prototype.insert = function(item) {
 /*  =======
 	UPDATES
 	======= */
-var _update = function(query, updateObj, options) {
+MongoCollection.prototype._update = function(query, updateObj, options) {
 	var deferred = q.defer();
 	this._collection.update(query, updateObj, options, function(err){
 		if (err) {
