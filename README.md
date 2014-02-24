@@ -14,8 +14,8 @@ var dao = new mongo.MongoDao(config.mongo.url);
 var transaction = function(func) {
 	var deferred = q.defer();
 	//it seems redundant to "getCollection" everytime, but it is just exposing an 
-	//internal promise property on the dao so once it is resolved
-	//there will be no more waiting
+	//internal promise property on the dao so once it is resolved there will be no more waiting. 
+	//Its a little verbose but allow you to remain stateless
 	dao.getCollection("movies").then(function(movies) {
 		//movies._collection is the core mongodb object you can use to do anything not wrapped by this library.
 		func(movies, deferred);
