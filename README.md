@@ -13,7 +13,8 @@ var dao = new mongo.MongoDao(config.mongo.url);
 //private helper that can be used by all the service methods
 var transaction = function(func) {
 	var deferred = q.defer();
-	//it seems redundant to "getCollection" everytime, but it is a promise so once it is resolved
+	//it seems redundant to "getCollection" everytime, but it is just exposing an 
+	//internal promise property on the dao so once it is resolved
 	//there will be no more waiting
 	dao.getCollection("movies").then(function(movies) {
 		func(movies, deferred);
