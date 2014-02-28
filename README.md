@@ -1,44 +1,66 @@
 droopy-mongo
 ============
 
-Wrapper for mongodb module to return promises and allow passed in transform functions.
+Wrapper for mongodb module to return promises.
 
-I'm not a big fan of callbacks so I generally promisify everything I do.  What I like about the "transaction" technique below is that I do not have to create a new deferred in every service method whose results I want to transform.
-
+I'm not a big fan of callbacks so I generally promisify everything I do.
 ```javascript
 //EXAMPLE OF A SERVICE LAYER YOU MIGHT IMPLEMENT USING droopy-mongo
 var mongo = require("droopy-mongo");
 var dao = new mongo.MongoDao(config.mongo.url);
 
-//private helper that can be used by all the service methods
-var transaction = function(func) {
-	var deferred = q.defer();
-	//it seems redundant to "getCollection" everytime, but it is just exposing an 
-	//internal promise property on the dao so once it is resolved there will be no more waiting. 
-	//Its a little verbose but allow you to remain stateless
-	dao.getCollection("movies").then(function(movies) {
-		//movies._collection is the core mongodb object you can use to do anything not wrapped by this library.
-		func(movies, deferred);
-	}, function() {
-		console.log("Error retrieving movies collection.");
-	});
-	return deferred.promise;
-};
 
-MovieService.prototype.findOne = function(query) {
-	return transaction(function(movies, deferred) {
-	  //we have passed this to transaction helper as a delegate
-	  //so we can rely on getting a deferred from the transaction
-		movies.findOne(query).then(function(result) {
-			deferred.resolve(models.FullMovie.create(result));
+dao.collection("test").find({title: "test"})
+.then(function(results){
+	console.log("Found %s 'test' matches", results.length);
+});
+
+dao.collection("test").insert({title:"test"})
+.then(function(doc){
+	console.log("Inserted ");
+	console.log(doc);
+
+	dao.collection("test").find({title: "test"})
+	.then(function(results){
+		console.log("Found %s 'test' matches", results.length);
+	});
+
+	dao.collection("test").findOne({title: "test"})
+	.then(function(result){
+		console.log("Looking for one. Found: ");
+		console.log(result);
+	});
+	
+	dao.collection("test").checkIfExists({title: "test"})
+	.then(function(result){
+		console.log("Checking if 'test' exists.  Answer is: %s", result);
+	});
+
+	dao.collection("test").overwrite({title: "test"}, {title:"test2"})
+	.then(function(updatedItem){
+		console.log("Updated 'test' to 'test2', full overwrite");
+
+		dao.collection("test").update({title: "test2"}, { description: "test description"})
+		.then(function(){
+			console.log("Updated test2 items to add a description");
+		});
+
+		dao.collection("test").find({title: "test2"})
+		.then(function(results){
+			console.log("Here are all the 'test2' docs in the collection:");
+			console.log(results);
+		});
+
+
+		dao.collection("test").remove({title:"test2"})
+		.then(function(){
+			console.log("Deleted all the 'test2' docs");
+
+			dao.collection("test").checkIfExists({title: "test2"})
+			.then(function(result){
+				console.log("Checking if 'test2' exists.  Answer is: %s", result);
+			});
 		});
 	});
-};
-
-MovieService.prototype.insert = function(movie) {
-	movie.addedToDb = new Date();
-	return transaction(function(movies, deferred) {
-		movies.insert(movie).then(deferred.resolve);
-	});
-};
+});	
 ```
