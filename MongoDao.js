@@ -12,21 +12,14 @@ var MongoDao = function (url) {
 		if (err) {
 			self.mongoConnected.reject(err);
 		}
+		console.log("Connected");
 		self._db = database;
-		self.mongoConnected.resolve();
+		self.mongoConnected.resolve(database);
 	});
 };
 
-MongoDao.prototype.getCollection = function(name) {
-	var deferred = q.defer(),
-		self = this;
-
-	self.mongoConnected.promise.then(function(){
-		var collection = self._db.collection(name);
-		deferred.resolve(new MongoCollection(collection));
-	});
-
-	return deferred.promise;
+MongoDao.prototype.collection = function(name) {
+	return new MongoCollection(name, this.mongoConnected.promise);
 };
 
 module.exports = MongoDao;
