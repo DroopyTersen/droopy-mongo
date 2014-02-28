@@ -12,7 +12,6 @@ var MongoDao = function (url) {
 		if (err) {
 			self.mongoConnected.reject(err);
 		}
-		console.log("Connected");
 		self._db = database;
 		self.mongoConnected.resolve(database);
 	});

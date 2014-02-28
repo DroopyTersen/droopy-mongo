@@ -15,8 +15,6 @@ MongoCollection.prototype._transaction = function(method, params) {
 	var self = this;
 	return self._dbConnected
 		.then(function() {
-			console.log(params);
-			//return q.ninvoke(self._collection, method, params); 
 			return q.npost(self._collection, method, params);
 		});
 };
@@ -81,7 +79,7 @@ MongoCollection.prototype.remove = function (query) {
 	Extras
 	====== */
 MongoCollection.prototype.aggregate = function(aggregateActions) {
-	return this._transaction("aggregate", [query]); 
+	return this._transaction("aggregate", [aggregateActions]); 
 };
 
 module.exports = MongoCollection;
