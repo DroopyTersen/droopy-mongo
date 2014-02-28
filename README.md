@@ -3,7 +3,6 @@ droopy-mongo
 
 Wrapper for mongodb module to return promises.
 
-I'm not a big fan of callbacks so I generally promisify everything I do.
 ```javascript
 //EXAMPLE OF A SERVICE LAYER YOU MIGHT IMPLEMENT USING droopy-mongo
 var mongo = require("droopy-mongo");
