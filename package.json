@@ -11,7 +11,9 @@
     "url": "https://github.com/DroopyTersen/droopy-mongo.git"
   },
   "keywords": [
-    "droopy"
+    "droopy",
+    "mongo",
+    "mongodb"
   ],
   "author": "Andrew Petersen",
   "bugs": {
