@@ -1,7 +1,7 @@
 droopy-mongo
 ============
 
-Wrapper for mongodb module to return promises.
+Wrapper for native mongodb driver to return promises.
 
 `npm install droopy-mongo`
 
