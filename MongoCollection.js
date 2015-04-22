@@ -26,7 +26,7 @@ MongoCollection.prototype.mongoFind = function(mongoQuery) {
 	return self._dbConnected
 		.then(function() {
 			var lazyResults = self._collection.find(mongoQuery.query, mongoQuery.fields, mongoQuery.options);
-			return q.nfcall(lazyResults.toArray);
+			return q.nfcall(lazyResults.toArray.bind(lazyResults));
 		});
 };
 
