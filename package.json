@@ -1,7 +1,7 @@
 {
   "name": "droopy-mongo",
-  "version": "1.0.1",
-  "description": "Wrapper form mongodb to promisify things",
+  "version": "1.0.3",
+  "description": "Wrapper for native mongodb driver to promisify things",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
